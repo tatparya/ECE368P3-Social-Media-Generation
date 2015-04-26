@@ -23,14 +23,13 @@ typedef struct RelationStruct {
 	float Uab;
 	float Lab;
 	int isFriend;
-	User user1;
-	User user2;
 
 }	Relation;
 
 typedef struct GraphStruct {
 
 	User * userList;
+	Relation * * relationMatrix;
 	float Lmax;
 	float friendshipThreshold;
 	int numUsers;
@@ -41,15 +40,19 @@ typedef struct GraphStruct {
 
 //	Structure Funcitons
 
-void createUser(  User * user, int id, int age, int gender, int maritalStatus,
-	int race, int birthPlace, int language, int occupation, int income );
-void destroyUserList( User * userList );
-void printUser( User * user );
+void createUser(  User * , int, int, int, int, int, int, int, int, int );
+void destroyUserList( User * );
+void printUser( User * );
+void printUserList( User *, int );
 
-Graph * createGraph( User * userList, int numUsers, float delta1 );
-void destroyGraph( Graph * graph );
-void printGraph( Graph * graph );
+void createRelationMatrix( Relation *, User, User );
+float calculateULab( User, User );
+void createFriendship( Relation *, float, float );
+
+Graph * createGraph( User *, int, float );
+void destroyGraph( Graph * );
+void printGraph( Graph * );
 
 
 //	Helper Functions
-Graph * parseInputFile( const char * filename );
+Graph * parseInputFile( const char *, const c	har * );
