@@ -76,8 +76,12 @@ Graph * parseInputFile( const char * filename )
 
 //	~~~~~~~~~~~~~~~~~~~ Structure Funcitons ~~~~~~~~~~~~~~~~~~~
 
-
 //	~~~~~~~~~~~~~~~~~~~ USER FUNCTIONS
+
+/*
+	Function to create users and return
+	an instance
+*/
 User * createUser( int id, int age, int gender, int maritalStatus,
 	int race, int birthPlace, int language, int occupation, int income )
 {
@@ -99,6 +103,9 @@ User * createUser( int id, int age, int gender, int maritalStatus,
 	return user;
 }
 
+/*
+	Function to print user details
+*/
 void printUser( User * user )
 {
 	printf( "User\n----\n" );
@@ -115,6 +122,10 @@ void printUser( User * user )
 
 //	~~~~~~~~~~~~~~~~~~~ GRAPH FUNCTIONS
 
+/*
+	Function to create graph and return
+	an instance
+*/
 Graph * createGraph()
 {
 	Graph * graph = NULL;
