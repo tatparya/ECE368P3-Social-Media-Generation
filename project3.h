@@ -30,9 +30,10 @@ typedef struct RelationStruct {
 
 typedef struct GraphStruct {
 
+	User * userList;
 	float Lmax;
-	float friendShipThreshold;
-	float numUsers;
+	float friendshipThreshold;
+	int numUsers;
 
 }	Graph;
 
@@ -40,9 +41,15 @@ typedef struct GraphStruct {
 
 //	Structure Funcitons
 
-User * createUser( int id, int age, int gender, int maritalStatus,
+void createUser(  User * user, int id, int age, int gender, int maritalStatus,
 	int race, int birthPlace, int language, int occupation, int income );
+void destroyUserList( User * userList );
 void printUser( User * user );
+
+Graph * createGraph( User * userList, int numUsers, float delta1 );
+void destroyGraph( Graph * graph );
+void printGraph( Graph * graph );
+
 
 //	Helper Functions
 Graph * parseInputFile( const char * filename );

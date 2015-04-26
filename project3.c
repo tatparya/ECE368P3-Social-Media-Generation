@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 //	Header File
 #include "project3.h"
@@ -27,7 +28,7 @@ Graph * parseInputFile( const char * filename )
 	float alpha1;
 	float alpha2;
 	int i = 0;
-	User * user = NULL;
+	User * userList = NULL;
 	Graph * graph = NULL;
 	int id;
 	int age;
@@ -39,11 +40,21 @@ Graph * parseInputFile( const char * filename )
 	int occupation;
 	int income;
 
-	//	Open file
+	//	Open file and check if successful
 	fptr = fopen( filename, "r" );
+
+	if( fptr == NULL )
+	{
+		printf( "ERROR!\nFile %s could not be opened!\n", filename );
+		return 0;
+	}
 
 	//	Get lines
 	fscanf( fptr, "%d,%f,%f,%f,%f", &numUsers, &delta1, &delta2, &alpha1, &alpha2 );
+
+	//	Allocate user List
+	userList = malloc( sizeof(User) * numUsers );
+
 	for( i = 0; i < numUsers; i++ )
 	{
 		//	Parse inputs
@@ -59,19 +70,24 @@ Graph * parseInputFile( const char * filename )
 				&income );
 
 		//	Create user instance
-		user = createUser( id, age, gender, maritalStatus, race,
+		createUser( &userList[i], id, age, gender, maritalStatus, race,
 				birthPlace, language, occupation, income );
-
-		printUser( user );
 	}
 
-	graph = createGraph();
+	for( i = 0; i < numUsers; i++ )
+	{
+		printUser( &userList[i] );
+	}
+
+	graph = createGraph( userList, numUsers, delta1 );
+	printGraph( graph );
 
 	//	Close file
 	fclose( fptr );
 
-	return NULL;
+	destroyGraph( graph );
 
+	return NULL;
 }
 
 //	~~~~~~~~~~~~~~~~~~~ Structure Funcitons ~~~~~~~~~~~~~~~~~~~
@@ -82,25 +98,29 @@ Graph * parseInputFile( const char * filename )
 	Function to create users and return
 	an instance
 */
-User * createUser( int id, int age, int gender, int maritalStatus,
+void createUser( User * user, int id, int age, int gender, int maritalStatus,
 	int race, int birthPlace, int language, int occupation, int income )
 {
-	//	Allocate Memory
-	User * user = NULL;
-	user = malloc( sizeof( User ) );
 
 	//	Set attributes
 	user -> id = id;
-	user ->	age = age ;
-	user ->	gender = gender;
-	user ->	maritalStatus = maritalStatus;
-	user ->	race = race;
-	user ->	birthPlace = birthPlace;
-	user ->	language = language ;
-	user ->	occupation = occupation;
-	user ->	income = income;
+	user -> age = age ;
+	user -> gender = gender;
+	user -> maritalStatus = maritalStatus;
+	user -> race = race;
+	user -> birthPlace = birthPlace;
+	user -> language = language ;
+	user -> occupation = occupation;
+	user -> income = income;
 
-	return user;
+}
+
+/*
+	Function to destroy user and free heap
+*/
+void destroyUserList( User * userList )
+{
+	free( userList );
 }
 
 /*
@@ -108,8 +128,7 @@ User * createUser( int id, int age, int gender, int maritalStatus,
 */
 void printUser( User * user )
 {
-	printf( "User\n----\n" );
-	printf( "User id = %d\n", user -> id );
+	printf( "User : %d\n----\n", user -> id );
 	printf( "User age = %d\n", user -> age );
 	printf( "User gender = %d\n", user -> gender );
 	printf( "User maritalStatus = %d\n", user -> maritalStatus );
@@ -126,14 +145,36 @@ void printUser( User * user )
 	Function to create graph and return
 	an instance
 */
-Graph * createGraph()
+Graph * createGraph( User * userList, int numUsers, float delta1 )
 {
 	Graph * graph = NULL;
 
 	//	Allocate memory
 	graph = malloc( sizeof( Graph ) );
+	graph -> userList = userList;
+	graph -> numUsers = numUsers;
 	graph -> Lmax = 0;
-	graph -> numUsers = 0;
+	graph -> friendshipThreshold = delta1;
 
 	return graph;
+}
+
+/*
+	Function to destroy graph and free heap
+*/
+void destroyGraph( Graph * graph )
+{
+	destroyUserList( graph -> userList );
+	free( graph );
+}
+
+/*
+	Function to print graph details
+*/
+void printGraph( Graph * graph )
+{
+	printf( "Graph\n----\n" );
+	printf( "Number of Users : %d\n", graph -> numUsers );
+	printf( "L max : %0.2f\n", graph -> Lmax );
+	printf( "Griendship Threshold : %0.2f\n", graph -> friendshipThreshold);
 }
