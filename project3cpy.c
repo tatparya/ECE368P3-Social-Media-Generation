@@ -134,17 +134,17 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 	destroyGraph( graph1 );
 	destroyGraph( graph2 );
 
-/*
-	int array[10] = { 1,2,3,5,6,7 };
+
+	int array[10] = { 2,3,4,5,6,7 };
 	printf( "Present in array : %d\n", isPresent( array, 6, 3 ));
 
-	insertInArray( array, 6, 4 );
+	insertInArray( array, 6, 1 );
 	for( i = 0; i < 7; i++ )
 	{
 		printf( "%d ", array[i] );
 	}
 	printf( "\n" );
-*/
+
 
 	//	Close file
 	fclose( fptr );
@@ -155,10 +155,9 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 
 //	~~~~~~~~~~~~~~~~~~~ QUERY Funcitons ~~~~~~~~~~~~~~~~~~~
 
-
 /*
-QUERY 1:	Function to get number of friends and print
-all friends
+	QUERY 1:	Function to get number of friends and print
+				all friends
 */
 void getMinLength( Graph * graph, FILE * fptr, int queryId )
 {
@@ -346,12 +345,18 @@ int isPresent( int * array, int numElements, int element )
 void insertInArray( int * array, int numElements, int element )
 {
 	int end = numElements - 1;
-	while( element < array[ end ] )
+	while(  end > 0 && element < array[ end ] )
 	{
 		array[ end + 1 ] = array[ end ];
 		end--;
 	}
-	array[ end + 1 ] = element;
+	if( end == 0 )
+	{
+		array[ end + 1 ] = array[ end ];
+		array[ end ] = element;
+	}
+	else
+		array[ end + 1 ] = element;
 }
 
 

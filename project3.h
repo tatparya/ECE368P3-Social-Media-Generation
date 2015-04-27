@@ -64,6 +64,7 @@ int isPresent( int *, int, int );
 void insertInArray( int *, int, int );
 
 //	Query Functions
+void getMinLength( Graph *, FILE *, int );
 void getFriends( Graph *, FILE *, int );
 void getFriendsOfFriends( Graph *, FILE *, int );
 void getAvgDegreeOfNode( Graph *, FILE * );
