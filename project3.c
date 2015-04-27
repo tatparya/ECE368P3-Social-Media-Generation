@@ -111,20 +111,32 @@ Graph * parseInputFile( const char * inputFile )
 
 	//	Dense Graph
 	printf(  "Dense Graph : \n-------------\n" );
+	printf(  "\n** Query1 **\n" );
 	getMinLength( graph1, queryId );
+	printf(  "\n** Query2 **\n" );
 	getAllNode( graph1, queryId, alpha );
+	printf(  "\n** Query3 **\n" );
 	getFriends( graph1, queryId );
+	printf(  "\n** Query4 **\n" );
 	getFriendsOfFriends( graph1, queryId );
+	printf(  "\n** Query5 **\n" );
 	getAvgDegreeOfNode( graph1 );
+	printf(  "\n** Query6 **\n" );
 	getAvgDegreeOfSecondNode( graph1 );
 
 	//	Sparse Graph
 	printf(  "\nSparse Graph : \n-------------\n" );
+	printf(  "\n** Query1 **\n" );
 	getMinLength( graph2, queryId );
+	printf(  "\n** Query2 **\n" );
 	getAllNode( graph2, queryId, alpha );
+	printf(  "\n** Query3 **\n" );
 	getFriends( graph2, queryId );
+	printf(  "\n** Query4 **\n" );
 	getFriendsOfFriends( graph2, queryId );
+	printf(  "\n** Query5 **\n" );
 	getAvgDegreeOfNode( graph2 );
+	printf(  "\n** Query6 **\n" );
 	getAvgDegreeOfSecondNode( graph2 );
 
 	//  ~~~~~~~~~~~~~~~~~~~	CLEAN UP  ~~~~~~~~~~~~~~~~~~~
@@ -187,7 +199,7 @@ void getMinLength( Graph * graph, int queryId )
 	}
 
 	printf(  "Minimum Path Length : %0.2f", LabMin );
-	printf(  "\tNodes: " );
+	printf(  "\nIDs: " );
 	for( i = 0; i < numMin; i++ )
 	{
 		printf(  "%d", idArray[i] );
@@ -256,7 +268,7 @@ void getAllNode( Graph * graph, int queryId, float alpha )
 		//printMap( map, graph -> numUsers );
 	}
 
-	printf(  "Number of nodes : %d\n",
+	printf(  "Number of nodes within threshold: %d\n",
 			getNumNodes( map, graph -> numUsers, alpha ) );
 }
 
@@ -338,6 +350,8 @@ void getFriends( Graph * graph,  int queryId )
 	printf(  "Num friends : %d\n", numFriends );
 	j = numFriends;
 
+	printf( "Ids :\t");
+
 	for( i = 0; i < numFriends; i++ )
 	{
 		printf(  "%d", idArray[i] );
@@ -398,6 +412,8 @@ void getFriendsOfFriends( Graph * graph,  int queryId )
 
 	printf(  "Num friends two hops away : %d\n", numFriends2 );
 	j = numFriends2;
+
+	printf( "Ids :\t");
 
 	for( i = 0; i < numFriends2; i++ )
 	{
