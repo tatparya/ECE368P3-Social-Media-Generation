@@ -154,6 +154,45 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 //	~~~~~~~~~~~~~~~~~~~ QUERY Funcitons ~~~~~~~~~~~~~~~~~~~
 
 /*
+	QUERY 1:	Function to get number of friends and print
+				all friends
+*/
+void getMinLength( Graph * graph, FILE * fptr, int queryId )
+{
+	int i, j;
+	int numFriends = 0;
+	int * idArray;
+	idArray = malloc( sizeof( int ) * graph -> numUsers );
+	for( i = 0; i < graph -> numUsers; i++ )
+	{
+		if( graph -> relationMatrix[ queryId-1 ][i].isFriend == 1 )
+		{
+			idArray[ numFriends ] = i + 1;
+			numFriends++;
+		}
+	}
+
+	fprintf( fptr, "Num friends : %d\n", numFriends );
+	j = numFriends;
+
+	for( i = 0; i < numFriends; i++ )
+	{
+		fprintf( fptr, "%d", idArray[i] );
+		j--;
+		if( j )
+		{
+			fprintf( fptr, ", " );
+		}
+		else
+		{
+			fprintf( fptr, "\n" );
+		}
+	}
+
+	free( idArray );
+}
+
+/*
 	QUERY 3:	Function to get number of friends and print
 				all friends
 */
@@ -292,7 +331,7 @@ int isPresent( int * array, int numElements, int element )
 void insertInArray( int * array, int numElements, int element )
 {
 	int end = numElements - 1;
-	while( element < array[ end ] )
+	while(  end > 0 && element < array[ end ] )
 	{
 		array[ end + 1 ] = array[ end ];
 		end--;
