@@ -115,7 +115,6 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 	//	Dense Graph
 	fprintf( fptrOut, "Dense Graph : \n-------------\n" );
 	getMinLength( graph1, fptrOut, queryId );
-	getAllNode( graph1, fptrOut, queryId, alpha );
 	getFriends( graph1, fptrOut, queryId );
 	getFriendsOfFriends( graph1, fptrOut, queryId );
 	getAvgDegreeOfNode( graph1, fptrOut );
@@ -124,7 +123,6 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 	//	Sparse Graph
 	fprintf( fptrOut, "\nSparse Graph : \n-------------\n" );
 	getMinLength( graph2, fptrOut, queryId );
-	getAllNode( graph2, fptrOut, queryId, alpha );
 	getFriends( graph2, fptrOut, queryId );
 	getFriendsOfFriends( graph2, fptrOut, queryId );
 	getAvgDegreeOfNode( graph2, fptrOut );
@@ -207,118 +205,6 @@ for( i = 0; i < numMin; i++ )
 	}
 }
 free( idArray );
-}
-
-/*
-	QUERY 2:	Get all shortes paths to nodes
-*/
-void getAllNode( Graph * graph, FILE * fptr, int queryId, float alpha )
-{
-	int i, j;
-	float min, dist;
-	int minInd;
-	DijNode * map;
-
-	//	Allocate dij map
-	map = malloc( sizeof( DijNode ) * graph -> numUsers );
-
-	//	Populaing the map
-	for( i = 0; i < graph -> numUsers; i++ )
-	{
-		if( graph -> relationMatrix[ queryId - 1 ][i].isFriend == 1 )
-			map[i].distance = graph -> relationMatrix[ queryId - 1 ][i].Lab;
-		else
-			map[i].distance = 9999;
-
-		if( i == queryId-1 )
-		{
-			map[i].visited = 1;
-			map[i].distance = 0;
-		}
-
-		else
-			map[i].visited = 0;
-	}
-
-	//printMap( map, graph -> numUsers );
-
-	for( i = 0; i < graph -> numUsers; i++ )
-	{
-		//	Get minimum, minInd gives new path
-		minInd = getMin( map, graph -> numUsers, &min );
-		map[minInd].visited = 1;
-		for( j = 0; j < graph -> numUsers; j++ )
-		{
-			if( map[i].visited == 0 && graph -> relationMatrix[ minInd ][j].isFriend == 1 )
-			{
-				dist = graph -> relationMatrix[minInd][j].Lab;
-				if( dist + min < map[j].distance )
-				{
-					map[j].distance = dist + min;
-				}
-			}
-		}
-		//printMap( map, graph -> numUsers );
-	}
-
-	fprintf( fptr, "Number of nodes : %d\n",
-			getNumNodes( map, graph -> numUsers, alpha ) );
-}
-
-int getNumNodes( DijNode * map, int numUsers, float alpha )
-{
-	int i = 0;
-	int count = 0;
-	for( i = 0; i < numUsers; i++ )
-	{
-		if( map[i].distance < alpha )
-		{
-			count++;
-		}
-	}
-
-	return count - 1;
-}
-
-int allVisited( DijNode * map, int numUsers )
-{
-	int i = 0;
-	for( i = 0; i < numUsers; i++ )
-	{
-		if( map[i].visited == 0 )
-			return 0;
-	}
-
-	return 1;
-}
-
-void printMap( DijNode * node, int numUsers )
-{
-	int i;
-	for( i = 0; i < numUsers; i++ )
-	{
-		printf( "%d %0.2f %d\n", i+1, node[i].distance, node[i].visited );
-	}
-	printf( "\n" );
-}
-
-int getMin( DijNode * map, int numUsers, float * num )
-{
-	int i;
-	float min = 9999;
-	int minInd = 0;
-	for( i = 1; i < numUsers; i++ )
-	{
-		if( map[i].visited == 0 && map[i].distance < min )
-		{
-			min = map[i].distance;
-			minInd = i;
-		}
-	}
-
-	* num = min;
-
-	return minInd;
 }
 
 /*
@@ -584,27 +470,6 @@ void createUser( User * user, int id, int age, int gender, int maritalStatus,
 	user -> occupation = occupation;
 	user -> income = income;
 
-}
-
-User * createSingleUser( int id, int age, int gender, int maritalStatus,
-int race, int birthPlace, int language, int occupation, int income )
-{
-
-	User * user;
-	user = malloc( sizeof( User ) );
-
-	//	Set attributes
-	user -> id = id;
-	user -> age = age ;
-	user -> gender = gender;
-	user -> maritalStatus = maritalStatus;
-	user -> race = race;
-	user -> birthPlace = birthPlace;
-	user -> language = language ;
-	user -> occupation = occupation;
-	user -> income = income;
-
-	return user;
 }
 
 /*

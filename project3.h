@@ -26,6 +26,11 @@ typedef struct RelationStruct {
 
 }	Relation;
 
+typedef struct DijStruct {
+	int visited;
+	float distance;
+}	DijNode;
+
 typedef struct GraphStruct {
 
 	User * userList;
@@ -41,6 +46,7 @@ typedef struct GraphStruct {
 //	Structure Funcitons
 
 void createUser(  User * , int, int, int, int, int, int, int, int, int );
+User * createSingleUser( int, int, int, int, int, int, int, int, int );
 void destroyUserList( User * );
 void printUser( User * );
 void printUserList( User *, int );
@@ -62,9 +68,16 @@ void printGraph( Graph * );
 Graph * parseInputFile( const char *, const char * );
 int isPresent( int *, int, int );
 void insertInArray( int *, int, int );
+void removeUser( int *, int );
+int countUsers( int *, int );
+void printMap( DijNode *, int );
+int getMin( DijNode *, int, float * );
+int allVisited( DijNode *, int );
+int getNumNodes( DijNode *, int, float );
 
 //	Query Functions
 void getMinLength( Graph *, FILE *, int );
+void getAllNode( Graph *, FILE *, int, float );
 void getFriends( Graph *, FILE *, int );
 void getFriendsOfFriends( Graph *, FILE *, int );
 void getAvgDegreeOfNode( Graph *, FILE * );
