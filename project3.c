@@ -9,20 +9,24 @@
 int main( int argc, char * * argv )
 {
 	char * inputFile = argv[1];
-	char * outputFile = argv[2];
+
+	int i = 0;
+	for( i = 0; i < argc; i++ )
+	{
+		printf( "%s\n", argv[i] );
+	}
 
 	//	Parsing Input, Generate Graph and Output
-	parseInputFile( inputFile, outputFile );
+	parseInputFile( inputFile );
 
 	return 0;
 }
 
 //	~~~~~~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~
 
-Graph * parseInputFile( const char * inputFile, const char * outputFile )
+Graph * parseInputFile( const char * inputFile )
 {
 	FILE * fptr = NULL;
-	FILE * fptrOut = NULL;
 	int numUsers;
 	float delta1;
 	float delta2;
@@ -105,30 +109,23 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 
 	//  ~~~~~~~~~~~~~~~~~~~	QUERYS ~~~~~~~~~~~~~~~~~~~
 
-	fptrOut = fopen( outputFile, "w" );
-	if( fptrOut == NULL )
-	{
-		printf( "ERROR!\nFile %s could not be opened!\n", outputFile );
-		return 0;
-	}
-
 	//	Dense Graph
-	fprintf( fptrOut, "Dense Graph : \n-------------\n" );
-	getMinLength( graph1, fptrOut, queryId );
-	getAllNode( graph1, fptrOut, queryId, alpha );
-	getFriends( graph1, fptrOut, queryId );
-	getFriendsOfFriends( graph1, fptrOut, queryId );
-	getAvgDegreeOfNode( graph1, fptrOut );
-	getAvgDegreeOfSecondNode( graph1, fptrOut );
+	printf(  "Dense Graph : \n-------------\n" );
+	getMinLength( graph1, queryId );
+	getAllNode( graph1, queryId, alpha );
+	getFriends( graph1, queryId );
+	getFriendsOfFriends( graph1, queryId );
+	getAvgDegreeOfNode( graph1 );
+	getAvgDegreeOfSecondNode( graph1 );
 
 	//	Sparse Graph
-	fprintf( fptrOut, "\nSparse Graph : \n-------------\n" );
-	getMinLength( graph2, fptrOut, queryId );
-	getAllNode( graph2, fptrOut, queryId, alpha );
-	getFriends( graph2, fptrOut, queryId );
-	getFriendsOfFriends( graph2, fptrOut, queryId );
-	getAvgDegreeOfNode( graph2, fptrOut );
-	getAvgDegreeOfSecondNode( graph2, fptrOut );
+	printf(  "\nSparse Graph : \n-------------\n" );
+	getMinLength( graph2, queryId );
+	getAllNode( graph2, queryId, alpha );
+	getFriends( graph2, queryId );
+	getFriendsOfFriends( graph2, queryId );
+	getAvgDegreeOfNode( graph2 );
+	getAvgDegreeOfSecondNode( graph2 );
 
 	//  ~~~~~~~~~~~~~~~~~~~	CLEAN UP  ~~~~~~~~~~~~~~~~~~~
 
@@ -150,8 +147,6 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 
 	//	Close file
 	fclose( fptr );
-	fclose( fptrOut );
-
 	return NULL;
 }
 
@@ -162,7 +157,7 @@ Graph * parseInputFile( const char * inputFile, const char * outputFile )
 QUERY 1:	Function to get number of friends and print
 all friends
 */
-void getMinLength( Graph * graph, FILE * fptr, int queryId )
+void getMinLength( Graph * graph, int queryId )
 {
 	int i, j;
 	int numMin;
@@ -183,36 +178,36 @@ void getMinLength( Graph * graph, FILE * fptr, int queryId )
 				j = 1;
 			}
 			else if( Lab == LabMin )
-		{
-			idArray[ numMin ] = i + 1;
-			numMin ++;
-			j++;
+			{
+				idArray[ numMin ] = i + 1;
+				numMin ++;
+				j++;
+			}
 		}
 	}
-}
 
-fprintf( fptr, "Minimum Path Length : %0.2f", LabMin );
-fprintf( fptr, "\tNodes: " );
-for( i = 0; i < numMin; i++ )
-{
-	fprintf( fptr, "%d", idArray[i] );
-	j--;
-	if( j )
+	printf(  "Minimum Path Length : %0.2f", LabMin );
+	printf(  "\tNodes: " );
+	for( i = 0; i < numMin; i++ )
 	{
-		fprintf( fptr, ", " );
+		printf(  "%d", idArray[i] );
+		j--;
+		if( j )
+		{
+			printf(  ", " );
+		}
+		else
+		{
+			printf(  "\n" );
+		}
 	}
-	else
-	{
-		fprintf( fptr, "\n" );
-	}
-}
-free( idArray );
+	free( idArray );
 }
 
 /*
 	QUERY 2:	Get all shortes paths to nodes
 */
-void getAllNode( Graph * graph, FILE * fptr, int queryId, float alpha )
+void getAllNode( Graph * graph, int queryId, float alpha )
 {
 	int i, j;
 	float min, dist;
@@ -261,7 +256,7 @@ void getAllNode( Graph * graph, FILE * fptr, int queryId, float alpha )
 		//printMap( map, graph -> numUsers );
 	}
 
-	fprintf( fptr, "Number of nodes : %d\n",
+	printf(  "Number of nodes : %d\n",
 			getNumNodes( map, graph -> numUsers, alpha ) );
 }
 
@@ -325,7 +320,7 @@ int getMin( DijNode * map, int numUsers, float * num )
 	QUERY 3:	Function to get number of friends and print
 				all friends
 */
-void getFriends( Graph * graph, FILE * fptr, int queryId )
+void getFriends( Graph * graph,  int queryId )
 {
 	int i, j;
 	int numFriends = 0;
@@ -340,20 +335,20 @@ void getFriends( Graph * graph, FILE * fptr, int queryId )
 		}
 	}
 
-	fprintf( fptr, "Num friends : %d\n", numFriends );
+	printf(  "Num friends : %d\n", numFriends );
 	j = numFriends;
 
 	for( i = 0; i < numFriends; i++ )
 	{
-		fprintf( fptr, "%d", idArray[i] );
+		printf(  "%d", idArray[i] );
 		j--;
 		if( j )
 		{
-			fprintf( fptr, ", " );
+			printf(  ", " );
 		}
 		else
 		{
-			fprintf( fptr, "\n" );
+			printf(  "\n" );
 		}
 	}
 
@@ -364,7 +359,7 @@ void getFriends( Graph * graph, FILE * fptr, int queryId )
 	QUERY 4:	Function to get number of friends and print
 				all friends
 */
-void getFriendsOfFriends( Graph * graph, FILE * fptr, int queryId )
+void getFriendsOfFriends( Graph * graph,  int queryId )
 {
 	int i, j;
 	int numFriends = 0;
@@ -401,20 +396,20 @@ void getFriendsOfFriends( Graph * graph, FILE * fptr, int queryId )
 		}
 	}
 
-	fprintf( fptr, "Num friends two hops away : %d\n", numFriends2 );
+	printf(  "Num friends two hops away : %d\n", numFriends2 );
 	j = numFriends2;
 
 	for( i = 0; i < numFriends2; i++ )
 	{
-		fprintf( fptr, "%d", idArray2[i] );
+		printf(  "%d", idArray2[i] );
 		j--;
 		if( j )
 		{
-			fprintf( fptr, ", " );
+			printf(  ", " );
 		}
 		else
 		{
-			fprintf( fptr, "\n" );
+			printf(  "\n" );
 		}
 	}
 
@@ -473,7 +468,7 @@ void insertInArray( int * array, int numElements, int element )
 	QUERY 5:	Function to get average degree of nodes
 				in graph
 */
-void getAvgDegreeOfNode( Graph * graph, FILE * fptr )
+void getAvgDegreeOfNode( Graph * graph )
 {
 	int i, j;
 	int numFriends = 0;
@@ -494,7 +489,7 @@ void getAvgDegreeOfNode( Graph * graph, FILE * fptr )
 	avg *= 100;
 	avg = trunc( avg );
 	avg = avg / 100;
-	fprintf( fptr, "Average Degree of Nodes : %0.2f\n", avg );
+	printf(  "Average Degree of Nodes : %0.2f\n", avg );
 }
 
 
@@ -503,7 +498,7 @@ void getAvgDegreeOfNode( Graph * graph, FILE * fptr )
 	QUERY 6:	Function to get average degree of second-level Friends
 				in graph
 */
-void getAvgDegreeOfSecondNode( Graph * graph, FILE * fptr )
+void getAvgDegreeOfSecondNode( Graph * graph )
 {
 
 	int k;
@@ -557,7 +552,7 @@ void getAvgDegreeOfSecondNode( Graph * graph, FILE * fptr )
 	avg *= 100;
 	avg = trunc( avg );
 	avg = avg / 100;
-	fprintf( fptr, "Average Degree of Nodes : %0.2f\n", avg );
+	printf(  "Average Degree of Nodes : %0.2f\n", avg );
 }
 
 

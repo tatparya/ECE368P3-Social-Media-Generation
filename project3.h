@@ -65,7 +65,7 @@ void printGraph( Graph * );
 
 //	Helper Functions
 
-Graph * parseInputFile( const char *, const char * );
+Graph * parseInputFile( const char * );
 int isPresent( int *, int, int );
 void insertInArray( int *, int, int );
 void removeUser( int *, int );
@@ -76,9 +76,9 @@ int allVisited( DijNode *, int );
 int getNumNodes( DijNode *, int, float );
 
 //	Query Functions
-void getMinLength( Graph *, FILE *, int );
-void getAllNode( Graph *, FILE *, int, float );
-void getFriends( Graph *, FILE *, int );
-void getFriendsOfFriends( Graph *, FILE *, int );
-void getAvgDegreeOfNode( Graph *, FILE * );
-void getAvgDegreeOfSecondNode( Graph *, FILE * );
+void getMinLength( Graph *, int );
+void getAllNode( Graph *, int, float );
+void getFriends( Graph *, int );
+void getFriendsOfFriends( Graph *, int );
+void getAvgDegreeOfNode( Graph * );
+void getAvgDegreeOfSecondNode( Graph * );
