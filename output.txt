@@ -1,49 +1,15 @@
 ./project3Test
-inputs/input1.txt
-Dense Graph :
--------------
+inputs/input.txt
+0.32,6
+5
+3,2,4,6
+5,2,3,4,5,6
+3.00
+5.00
 
-** Query1 **
-Minimum Path Length : 0.63
-IDs: 7
-
-** Query2 **
-Number of nodes within threshold: 4
-
-** Query3 **
-Num friends : 4
-Ids :	5, 6, 7, 8
-
-** Query4 **
-Num friends two hops away : 5
-Ids :	2, 5, 6, 7, 8
-
-** Query5 **
-Average Degree of Nodes : 3.80
-
-** Query6 **
-Average Degree of Nodes : 5.20
-
-Sparse Graph :
--------------
-
-** Query1 **
-Minimum Path Length : 0.83
-IDs: 5
-
-** Query2 **
-Number of nodes within threshold: 3
-
-** Query3 **
-Num friends : 3
-Ids :	5, 6, 8
-
-** Query4 **
-Num friends two hops away : 3
-Ids :	5, 6, 8
-
-** Query5 **
-Average Degree of Nodes : 2.80
-
-** Query6 **
-Average Degree of Nodes : 3.00
+0.85,2
+2
+2,2,4
+2,2,4
+2.00
+2.00

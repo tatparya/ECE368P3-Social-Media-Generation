@@ -10,12 +10,6 @@ int main( int argc, char * * argv )
 {
 	char * inputFile = argv[1];
 
-	int i = 0;
-	for( i = 0; i < argc; i++ )
-	{
-		printf( "%s\n", argv[i] );
-	}
-
 	//	Parsing Input, Generate Graph and Output
 	parseInputFile( inputFile );
 
@@ -85,58 +79,22 @@ Graph * parseInputFile( const char * inputFile )
 	graph1 = createGraph( userList, numUsers, delta1 );
 	graph2 = createGraph( userList, numUsers, delta2 );
 
-	/*
-	int inputid;
-	printf( "Enter user id for friends\n" );
-	scanf( "%d", &inputid );
-	while( inputid != 0 )
-	{
-		printFriendList( graph1, &(graph1 -> userList[ inputid - 1 ]) );
-		printf( "Enter user id for friends\n" );
-		scanf( "%d", &inputid );
-	}
-
-	int j;
-	for( i = 0; i < numUsers; i ++ )
-	{
-		for( j = 0; j < numUsers; j++ )
-		{
-			printRelationBetween( graph1,
-			&(graph1 -> userList[i]), &(graph1 -> userList[j]) );
-		}
-	}
-	*/
-
 	//  ~~~~~~~~~~~~~~~~~~~	QUERYS ~~~~~~~~~~~~~~~~~~~
 
 	//	Dense Graph
-	printf(  "Dense Graph : \n-------------\n" );
-	printf(  "\n** Query1 **\n" );
 	getMinLength( graph1, queryId );
-	printf(  "\n** Query2 **\n" );
 	getAllNode( graph1, queryId, alpha );
-	printf(  "\n** Query3 **\n" );
 	getFriends( graph1, queryId );
-	printf(  "\n** Query4 **\n" );
 	getFriendsOfFriends( graph1, queryId );
-	printf(  "\n** Query5 **\n" );
 	getAvgDegreeOfNode( graph1 );
-	printf(  "\n** Query6 **\n" );
 	getAvgDegreeOfSecondNode( graph1 );
-
+	printf( "\n" );
 	//	Sparse Graph
-	printf(  "\nSparse Graph : \n-------------\n" );
-	printf(  "\n** Query1 **\n" );
 	getMinLength( graph2, queryId );
-	printf(  "\n** Query2 **\n" );
 	getAllNode( graph2, queryId, alpha );
-	printf(  "\n** Query3 **\n" );
 	getFriends( graph2, queryId );
-	printf(  "\n** Query4 **\n" );
 	getFriendsOfFriends( graph2, queryId );
-	printf(  "\n** Query5 **\n" );
 	getAvgDegreeOfNode( graph2 );
-	printf(  "\n** Query6 **\n" );
 	getAvgDegreeOfSecondNode( graph2 );
 
 	//  ~~~~~~~~~~~~~~~~~~~	CLEAN UP  ~~~~~~~~~~~~~~~~~~~
@@ -144,18 +102,6 @@ Graph * parseInputFile( const char * inputFile )
 	destroyUserList( userList );
 	destroyGraph( graph1 );
 	destroyGraph( graph2 );
-
-/*
-	int array[10] = { 1,2,3,5,6,7 };
-	printf( "Present in array : %d\n", isPresent( array, 6, 3 ));
-
-	insertInArray( array, 6, 4 );
-	for( i = 0; i < 7; i++ )
-	{
-		printf( "%d ", array[i] );
-	}
-	printf( "\n" );
-*/
 
 	//	Close file
 	fclose( fptr );
@@ -198,15 +144,14 @@ void getMinLength( Graph * graph, int queryId )
 		}
 	}
 
-	printf(  "Minimum Path Length : %0.2f", LabMin );
-	printf(  "\nIDs: " );
+	printf(  "%0.2f,", LabMin );
 	for( i = 0; i < numMin; i++ )
 	{
 		printf(  "%d", idArray[i] );
 		j--;
 		if( j )
 		{
-			printf(  ", " );
+			printf(  "," );
 		}
 		else
 		{
@@ -254,11 +199,13 @@ void getAllNode( Graph * graph, int queryId, float alpha )
 		//	Get minimum, minInd gives new path
 		minInd = getMin( map, graph -> numUsers, &min );
 		map[minInd].visited = 1;
+		//printf( "Minind = %d\n", minInd );
 		for( j = 0; j < graph -> numUsers; j++ )
 		{
-			if( map[i].visited == 0 && graph -> relationMatrix[ minInd ][j].isFriend == 1 )
+			if( graph -> relationMatrix[ minInd ][j].isFriend == 1 )
 			{
 				dist = graph -> relationMatrix[minInd][j].Lab;
+				//printf( "dist = %0.2f\n", dist );
 				if( dist + min < map[j].distance )
 				{
 					map[j].distance = dist + min;
@@ -268,7 +215,7 @@ void getAllNode( Graph * graph, int queryId, float alpha )
 		//printMap( map, graph -> numUsers );
 	}
 
-	printf(  "Number of nodes within threshold: %d\n",
+	printf(  "%d\n",
 			getNumNodes( map, graph -> numUsers, alpha ) );
 }
 
@@ -347,10 +294,8 @@ void getFriends( Graph * graph,  int queryId )
 		}
 	}
 
-	printf(  "Num friends : %d\n", numFriends );
+	printf(  "%d,", numFriends );
 	j = numFriends;
-
-	printf( "Ids :\t");
 
 	for( i = 0; i < numFriends; i++ )
 	{
@@ -358,7 +303,7 @@ void getFriends( Graph * graph,  int queryId )
 		j--;
 		if( j )
 		{
-			printf(  ", " );
+			printf(  "," );
 		}
 		else
 		{
@@ -410,10 +355,8 @@ void getFriendsOfFriends( Graph * graph,  int queryId )
 		}
 	}
 
-	printf(  "Num friends two hops away : %d\n", numFriends2 );
+	printf(  "%d,", numFriends2 );
 	j = numFriends2;
-
-	printf( "Ids :\t");
 
 	for( i = 0; i < numFriends2; i++ )
 	{
@@ -421,7 +364,7 @@ void getFriendsOfFriends( Graph * graph,  int queryId )
 		j--;
 		if( j )
 		{
-			printf(  ", " );
+			printf(  "," );
 		}
 		else
 		{
@@ -505,7 +448,7 @@ void getAvgDegreeOfNode( Graph * graph )
 	avg *= 100;
 	avg = trunc( avg );
 	avg = avg / 100;
-	printf(  "Average Degree of Nodes : %0.2f\n", avg );
+	printf(  "%0.2f\n", avg );
 }
 
 
@@ -568,7 +511,7 @@ void getAvgDegreeOfSecondNode( Graph * graph )
 	avg *= 100;
 	avg = trunc( avg );
 	avg = avg / 100;
-	printf(  "Average Degree of Nodes : %0.2f\n", avg );
+	printf(  "%0.2f\n", avg );
 }
 
 
