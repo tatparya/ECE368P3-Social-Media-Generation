@@ -145,18 +145,6 @@ Graph * parseInputFile( const char * inputFile )
 	destroyGraph( graph1 );
 	destroyGraph( graph2 );
 
-/*
-	int array[10] = { 1,2,3,5,6,7 };
-	printf( "Present in array : %d\n", isPresent( array, 6, 3 ));
-
-	insertInArray( array, 6, 4 );
-	for( i = 0; i < 7; i++ )
-	{
-		printf( "%d ", array[i] );
-	}
-	printf( "\n" );
-*/
-
 	//	Close file
 	fclose( fptr );
 	return NULL;
