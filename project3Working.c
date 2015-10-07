@@ -181,10 +181,11 @@ void getMinLength( Graph * graph, FILE * fptr, int queryId )
 				j = 1;
 			}
 			else if( Lab == LabMin )
-		{
-			idArray[ numMin ] = i + 1;
-			numMin ++;
-			j++;
+			{
+				idArray[ numMin ] = i + 1;
+				numMin ++;
+				j++;
+			}
 		}
 	}
 }
